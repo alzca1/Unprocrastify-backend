@@ -17,7 +17,8 @@ mongoose
   .connect(process.env.MONGODB_URI, {
     keepAlive: true,
     useNewUrlParser: true,
-    reconnectTries: Number.MAX_VALUE
+    reconnectTries: Number.MAX_VALUE 
+    
   })
   .then(() => {
     console.log(`Connected to database`);
@@ -25,6 +26,9 @@ mongoose
   .catch(error => {
     console.error(error);
   });
+
+const listRouter = require('./routes/list')
+const taskRouter = require('./routes/task')
 
 const app = express();
 
@@ -57,6 +61,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', auth);
+app.use('/list', listRouter);
+app.use('/task', taskRouter)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
