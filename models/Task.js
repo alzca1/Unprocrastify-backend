@@ -20,17 +20,17 @@ const taskSchema = new Schema({
     notes: {
     type: String
     },
-    list:[{
+    list:{
     type: ObjectId, 
     ref: 'List'
-    }],
+    },
     completed:{
       type: Boolean,
     },
-    owner:[{
+    owner:{
       type: ObjectId,
       ref: 'User'
-    }],
+    },
     user:[{
       type: ObjectId, 
       ref: 'User'

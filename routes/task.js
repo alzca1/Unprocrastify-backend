@@ -1,4 +1,5 @@
 'use strict'
+const List = require ('../models/List')
 
 const express= require ('express');
 const Task = require ('../models/Task')
@@ -14,6 +15,7 @@ router.get('/tasks', async (req, res, next) =>{
     }
 })
 
+
 router.get('/tasks/:id', async (req,res,next) => {
     const { id } = req.params; 
     try {
@@ -26,8 +28,14 @@ router.get('/tasks/:id', async (req,res,next) => {
 
 router.post('/tasks/new', async (req,res,next)=> {
     try{
-        const newTask = req.body;
-        const createdTask =  await Task.create(newTask)
+      console.log(req.body)
+        const {name, duedate, list, priority, notes, owner} = req.body;
+        console.log("req.body", req.body);
+        
+        const createdTask =  await Task.create({name, duedate,list, priority, notes, owner})
+        const updateList = await List.findByIdAndUpdate(createdTask.list, { $push: { tasks: createdTask._id}})
+        
+        
         res.status(200).json(createdTask)
     } catch(error) {
         next(error)

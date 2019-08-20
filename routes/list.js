@@ -7,8 +7,9 @@ const router = express.Router();
 
 router.get('/lists', async (req, res, next) =>{
     try {
-        const listOfLists = await List.find(); 
+        const listOfLists = await List.find().populate('tasks'); 
         res.status(200).json({listOfLists})
+        console.log(listOfLists[1].tasks)
     }catch (error) {
         next(error)
     }
@@ -26,9 +27,9 @@ router.get('/lists/:id', async (req,res,next) => {
 
 router.post('/lists/new', async (req,res,next)=> {
     try{
-        const newList = req.body;
-        const createdList =  await List.create(newList)
-        res.status(200).json(createdList)
+      const {name, color,  tasks, owner, users} = req.body;
+      const createdList =  await List.create({name, color, tasks, owner, users})
+      res.status(200).json(createdList)
     } catch(error) {
         next(error)
     }
