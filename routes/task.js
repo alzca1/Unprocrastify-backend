@@ -58,8 +58,8 @@ router.put('/tasks/:id/edit', async (req, res, next) => {
 router.delete('/tasks/:id/delete', async (req, res, next) => {
     const { id } = req.params;
     try {
-      await Task.findByIdAndDelete(id), {$set: updateData}, {useFindAndModify: false};
-      res.status(200).json({ message: 'task deleted' });
+      const updatedAfterDelete = await Task.findByIdAndDelete(id);
+      res.status(200).json({ updatedAfterDelete});
     } catch (error) {
       next(error);
     }
